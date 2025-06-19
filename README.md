@@ -1,0 +1,61 @@
+# RingChan
+
+[![CI](https://github.com/floatdrop/ringchan/actions/workflows/ci.yaml/badge.svg)](https://github.com/floatdrop/ringchan/actions/workflows/ci.yaml)
+[![Go Report Card](https://goreportcard.com/badge/github.com/floatdrop/ringchan)](https://goreportcard.com/report/github.com/floatdrop/ringchan)
+[![Go Reference](https://pkg.go.dev/badge/github.com/floatdrop/ringchan.svg)](https://pkg.go.dev/github.com/floatdrop/ringchan/v2)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+**RingChan** is a thread-safe, fixed-capacity ring buffer implemented as a channel in Go. It mimics Go's channel behavior while providing ring-buffer semantics — meaning **new items overwrite the oldest when full**.
+
+## Features
+
+- Fixed-size buffer with overwrite behavior
+- Range-friendly: can be iterated using `for ... range`
+- Safe for concurrent producers and consumers
+- Supports graceful shutdown via `Close()`
+
+## Installation
+
+```bash
+go get github.com/floatdrop/ringchan
+```
+
+## Usage
+
+```go
+package main
+
+import (
+	"fmt"
+	"time"
+
+	"github.com/floatdrop/ringchan"
+)
+
+func main() {
+	rc := ringchan.New[string](3)
+
+	go func() {
+		inputs := []string{"A", "B", "C", "D", "E"}
+		for _, v := range inputs {
+			rc.In <- v
+		}
+		rc.Close()
+	}()
+
+	time.Sleep(50 * time.Millisecond)
+
+	for v := range rc.Out() {
+		fmt.Println("Got:", v)
+	}
+
+	// Output:
+	// Got: C
+	// Got: D
+	// Got: E
+}
+```
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
