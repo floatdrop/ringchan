@@ -45,7 +45,7 @@ func main() {
 
 	time.Sleep(50 * time.Millisecond)
 
-	for v := range rc.Out() {
+	for v := range rc.Out {
 		fmt.Println("Got:", v)
 	}
 
