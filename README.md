@@ -12,7 +12,6 @@
 - Fixed-size buffer with overwrite behavior
 - Range-friendly: can be iterated using `for ... range`
 - Safe for concurrent producers and consumers
-- Supports graceful shutdown via `Close()`
 
 ## Installation
 
