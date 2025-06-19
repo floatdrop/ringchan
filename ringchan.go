@@ -3,6 +3,9 @@ package ringchan
 type Ring[T any] struct {
 	// C is the channel to receive values from.
 	C <-chan T
+
+	// Number of dropped items due to full buffer.
+	Dropped int
 }
 
 // New creates a ring-buffered channel with fixed capacity from incoming channel.
@@ -29,6 +32,7 @@ func New[T any](in <-chan T, size int) *Ring[T] {
 				default:
 					out <- v
 				}
+				rc.Dropped++
 			}
 		}
 	}()
