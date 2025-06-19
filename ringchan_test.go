@@ -6,24 +6,25 @@ import (
 )
 
 func TestRingChanBasic(t *testing.T) {
-	rc := New[int](3)
+	input := make(chan int, 5)
+	rc := New(input, 3)
 
 	go func() {
 		for i := 1; i <= 5; i++ {
-			rc.In <- i
+			input <- i
 		}
-		rc.Close()
+		close(input)
 	}()
 
 	time.Sleep(50 * time.Millisecond)
 
-	l := rc.Len()
+	l := len(rc.C)
 	if l != 3 {
 		t.Fatalf("expected Len()=%v, got %v", 3, l)
 	}
 
 	var got []int
-	for v := range rc.Out {
+	for v := range rc.C {
 		got = append(got, v)
 	}
 
@@ -40,29 +41,31 @@ func TestRingChanBasic(t *testing.T) {
 }
 
 func TestRingChanBlockingReceive(t *testing.T) {
-	rc := New[int](1)
+	input := make(chan int, 1)
+	rc := New(input, 1)
 
 	go func() {
 		time.Sleep(100 * time.Millisecond)
-		rc.In <- 42
-		rc.Close()
+		input <- 42
+		close(input)
 	}()
 
-	val := <-rc.Out
+	val := <-rc.C
 	if val != 42 {
 		t.Errorf("expected 42, got %v", val)
 	}
 }
 
 func TestRingChanRangeAfterClose(t *testing.T) {
-	rc := New[string](2)
+	input := make(chan string, 2)
+	rc := New(input, 2)
 
-	rc.In <- "foo"
-	rc.In <- "bar"
-	rc.Close()
+	input <- "foo"
+	input <- "bar"
+	close(input)
 
 	var results []string
-	for v := range rc.Out {
+	for v := range rc.C {
 		results = append(results, v)
 	}
 

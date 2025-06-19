@@ -8,19 +8,20 @@ import (
 )
 
 func ExampleNew() {
-	rc := ringchan.New[string](3)
+	input := make(chan string, 5)
+	ring := ringchan.New(input, 3)
 
 	go func() {
 		inputs := []string{"A", "B", "C", "D", "E"}
 		for _, v := range inputs {
-			rc.In <- v
+			input <- v
 		}
-		rc.Close()
+		close(input)
 	}()
 
 	time.Sleep(50 * time.Millisecond)
 
-	for v := range rc.Out {
+	for v := range ring.C {
 		fmt.Println("Got:", v)
 	}
 
