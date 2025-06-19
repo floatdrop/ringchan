@@ -33,6 +33,9 @@ func TestRingChanBasic(t *testing.T) {
 	if len(got) != len(want) {
 		t.Fatalf("expected %v values, got %v", len(want), len(got))
 	}
+	if rc.Dropped != 2 {
+		t.Fatalf("expected %d values to be dropped, got %d", 2, rc.Dropped)
+	}
 	for i := range want {
 		if got[i] != want[i] {
 			t.Errorf("expected %v at index %d, got %v", want[i], i, got[i])
