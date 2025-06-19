@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/floatdrop/ringchan/actions/workflows/ci.yaml/badge.svg)](https://github.com/floatdrop/ringchan/actions/workflows/ci.yaml)
 [![Go Report Card](https://goreportcard.com/badge/github.com/floatdrop/ringchan)](https://goreportcard.com/report/github.com/floatdrop/ringchan)
-[![Go Reference](https://pkg.go.dev/badge/github.com/floatdrop/ringchan.svg)](https://pkg.go.dev/github.com/floatdrop/ringchan/v2)
+[![Go Reference](https://pkg.go.dev/badge/github.com/floatdrop/ringchan.svg)](https://pkg.go.dev/github.com/floatdrop/ringchan)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 **RingChan** is a thread-safe, fixed-capacity ring buffer implemented as a channel in Go. It mimics Go's channel behavior while providing ring-buffer semantics — meaning **new items overwrite the oldest when full**.
