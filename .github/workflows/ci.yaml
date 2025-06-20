@@ -8,6 +8,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
       - name: Setup Go
         uses: actions/setup-go@v5
         with:
