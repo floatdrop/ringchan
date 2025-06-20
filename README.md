@@ -57,6 +57,24 @@ func main() {
 }
 ```
 
+## Benchmarks
+
+```bash
+go test -bench=. -benchmem
+```
+
+```
+goos: darwin
+goarch: arm64
+pkg: github.com/floatdrop/ringchan
+cpu: Apple M1 Pro
+BenchmarkSingleSender-10       	 7097070	       167.3 ns/op	       0 B/op	       0 allocs/op
+BenchmarkParallelSenders-10    	 4145682	       295.0 ns/op	       0 B/op	       0 allocs/op
+PASS
+coverage: 90.9% of statements
+ok  	github.com/floatdrop/ringchan	3.050s
+```
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

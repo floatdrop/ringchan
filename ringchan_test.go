@@ -76,3 +76,33 @@ func TestRingChanRangeAfterClose(t *testing.T) {
 		t.Errorf("unexpected results: %v", results)
 	}
 }
+
+func BenchmarkSingleSender(b *testing.B) {
+	input := make(chan int)
+	ring := New(input, 1)
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		input <- i
+	}
+	close(input)
+	for range ring.C {
+	}
+	b.StopTimer()
+}
+
+func BenchmarkParallelSenders(b *testing.B) {
+	input := make(chan int)
+	ring := New(input, 1)
+	b.ResetTimer()
+
+	b.RunParallel(func(pb *testing.PB) {
+		for pb.Next() {
+			input <- 1
+		}
+	})
+
+	close(input)
+	for range ring.C {
+	}
+	b.StopTimer()
+}
