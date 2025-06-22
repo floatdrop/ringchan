@@ -75,6 +75,8 @@ coverage: 90.9% of statements
 ok  	github.com/floatdrop/ringchan	3.050s
 ```
 
+For high-throughput write-heavy workloads it is better to use preallocated ringbuffer, like https://github.com/peterbourgon/rb
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
